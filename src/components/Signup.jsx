@@ -1,6 +1,53 @@
+import {
+  isEmail,
+  isNotEmpty,
+  isEqualToOtherValue,
+  hasMinLength,
+} from "../util/validation.js";
+
 export default function Signup() {
+  function signupAction(formData) {
+    const email = formData.get("email");
+    const password = formData.get("password");
+    const firstName = formData.get("first-name");
+    const lastName = formData.get("last-name");
+    const role = formData.get("role");
+    const terms = formData.get("terms");
+    const acquisition = formData.getAll("acquisition");
+
+    let errors = [];
+
+    if (!isEmail(email)) {
+      errors.push("email invalid");
+    }
+    if (!isNotEmpty(password) || !hasMinLength(password, 6)) {
+      errors.push("provide password with at least 6 characters");
+    }
+    if (!isNotEmpty(firstName) || !isNotEmpty(lastName)) {
+      errors.push("provide valid fist and last name");
+    }
+    if (!isNotEmpty(role)) {
+      errors.push("select a role");
+    }
+    if (!terms) {
+      errors.push("accept terms and conditions");
+    }
+    if (acquisition.length === 0) {
+      errors.push("select at least one acquisition");
+    }
+
+    if (errors.length > 0) {
+      return {
+        errors,
+      };
+    }
+
+    return {
+      errors: null,
+    };
+  }
   return (
-    <form>
+    <form action={signupAction}>
       <h2>Welcome on board!</h2>
       <p>We just need a little bit of data from you to get you started 🚀</p>
 

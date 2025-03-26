@@ -9,6 +9,7 @@ export default function Signup() {
   function signupAction(formData) {
     const email = formData.get("email");
     const password = formData.get("password");
+    const confirmPassword = formData.get("confirm-password");
     const firstName = formData.get("first-name");
     const lastName = formData.get("last-name");
     const role = formData.get("role");
@@ -22,6 +23,9 @@ export default function Signup() {
     }
     if (!isNotEmpty(password) || !hasMinLength(password, 6)) {
       errors.push("provide password with at least 6 characters");
+    }
+    if (!isEqualToOtherValue(password, confirmPassword)) {
+      errors.push("passwords do not match");
     }
     if (!isNotEmpty(firstName) || !isNotEmpty(lastName)) {
       errors.push("provide valid fist and last name");
